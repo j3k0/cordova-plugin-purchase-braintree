@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-braintree-3ds",
-  "version": "3.0.0",
+  "name": "cordova-plugin-purchase-braintree",
+  "version": "13.0.0",
   "description": "A Cordova plugin for the Braintree mobile payment processing SDK with 3D secure and Data Collecting.",
   "cordova": {
-    "id": "cordova-plugin-braintree-3ds",
+    "id": "cordova-plugin-purchase-braintree",
     "platforms": [
       "android",
       "ios"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MedITSolutionsKurman/cordova-plugin-braintree-3ds.git"
+    "url": "git+https://github.com/j3k0/cordova-plugin-purchase-braintree.git"
   },
   "keywords": [
     "cordova",
@@ -24,16 +24,19 @@
     "data collector",
     "3ds 2",
     "3d secure",
-    "threeD secure"
+    "threeD secure",
+    "fovea",
+    "iaptic",
+    "purchase"
   ],
   "license": "MIT",
   "main": "index.js",
-  "author": "MedIT Solutions, fork Taracque and Engineerapart",
+  "author": "Fovea, fork MedIT Solutions, fork Taracque and Engineerapart",
   "private": false,
   "bugs": {
-    "url": "https://github.com/MedITSolutionsKurman/cordova-plugin-braintree-3ds/issues"
+    "url": "https://github.com/j3k0/cordova-plugin-purchase-braintree/issues"
   },
-  "homepage": "https://github.com/MedITSolutionsKurman/cordova-plugin-braintree-3ds#readme",
+  "homepage": "https://github.com/j3k0/cordova-plugin-purchase-braintree#readme",
   "directories": {
     "lib": "lib"
   },

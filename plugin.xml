@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id="cordova-plugin-braintree-3ds"
-        version="3.0.0">
+        id="cordova-plugin-purchase-braintree"
+        version="13.0.0">
 
-    <name>Braintree Plugin</name>
+    <name>Braintree Adapter for cordova-plugin-purchase</name>
 
     <description>
-        A Cordova plugin for the Braintree mobile payment processing SDK.
+        Braintree mobile payment processing SDK for Cordova.
     </description>
 
     <license>MIT</license>
 
     <!-- JavaScript Interface -->
-    <js-module src="www/braintree-plugin.js" name="BraintreePlugin">
+    <!-- js-module src="www/braintree-plugin.js" name="BraintreePlugin">
         <clobbers target="BraintreePlugin" />
-    </js-module>
+    </js-module -->
 
     <!-- Android Configuration -->
-    <!-- <platform name="android">
+    <platform name="android">
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="BraintreePlugin">
-                <param name="android-package" value="net.justincredible.BraintreePlugin" />
+                <param name="android-package" value="cc.fovea.BraintreePlugin" />
+                <param name="onload" value="true" />
             </feature>
         </config-file>
 
-        <source-file src="src/android/BraintreePlugin.java" target-dir="src/net/justincredible" />
+        <source-file src="src/android/BraintreePlugin.java" target-dir="src/cc/fovea" />
+        <source-file src="src/android/BraintreeTokenProvider.java" target-dir="src/cc/fovea" />
 
-        <framework src="com.android.support:support-v13:27.+" />
-        <framework src="com.android.support:appcompat-v7:27.+" />
+        <!-- framework src="com.android.support:support-v13:27.+" / -->
+        <!-- framework src="com.android.support:appcompat-v7:27.+" / -->
         <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
 
         <config-file target="AndroidManifest.xml" parent="application">
             <activity android:name="com.braintreepayments.api.threedsecure.ThreeDSecureWebViewActivity" />
             <activity android:name="com.braintreepayments.api.BraintreePaymentActivity" />
-			<activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity" android:launchMode="singleTask">
+			<activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity" android:launchMode="singleTask" android:exported="true">
 				<intent-filter>
 					<action android:name="android.intent.action.VIEW" />
 					<category android:name="android.intent.category.DEFAULT" />
@@ -45,10 +47,10 @@
 			</activity>
         </config-file>
 
-    </platform> -->
+    </platform>
 
     <!-- iOS Configuration -->
-    <platform name="ios">
+    <!-- platform name="ios">
 
         <preference name="IOS_BRAINTREE_POD_VERSION" default="~> 5.5.0" />
 
@@ -73,6 +75,6 @@
             </pods>
         </podspec>
 
-    </platform>
+    </platform -->
 
 </plugin>

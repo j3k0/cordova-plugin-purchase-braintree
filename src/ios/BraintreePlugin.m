@@ -81,16 +81,30 @@ NSString * threeDResultNonce;
     [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
 }
 
-- (void)canMakePayments:(CDVInvokedUrlCommand *)command {
+//
+// PassKit
+// -------
+//
+// Returns whether the user can make payments.
+//
+// returns the value from PassKit (Apple Pay and Wallet): PKPaymentAuthorizationViewController.canMakePayments
+//
+- (void)pkCanMakePayments:(CDVInvokedUrlCommand *)command {
 
-    NSString * callbackId = command.callbackId;
+    CDVPluginResult * pluginResult = [CDVPluginResult
+        resultWithStatus:CDVCommandStatus_OK
+        messageAsBool:PKPaymentAuthorizationViewController.canMakePayments];
 
-    CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:PKPaymentAuthorizationViewController.canMakePayments];
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)setupApplePay:(CDVInvokedUrlCommand *)command {
+//
+// PassKit
+// -------
+//
+// Initialize PassKit (Apple Pay / Wallet)
+//
+- (void)pkSetOptions:(CDVInvokedUrlCommand *)command {
 
     // Ensure the client has been initialized.
     if (!self.braintreeClient) {
@@ -120,7 +134,13 @@ NSString * threeDResultNonce;
     }
 }
 
-- (void)presentDropInPaymentUI:(CDVInvokedUrlCommand *)command {
+//
+// PassKit
+// -------
+//
+// Present the payment UI.
+//
+- (void)pkPresentDropInPaymentUI:(CDVInvokedUrlCommand *)command {
 
     // Ensure the client has been initialized.
     if (!self.braintreeClient) {
@@ -158,7 +178,7 @@ NSString * threeDResultNonce;
     [self presentApplePayWithDescription:primaryDescription amount:amount andRequiredShippingContactFields:shippingContactFields];
 }
 
-- (void)verifyCard:(CDVInvokedUrlCommand *)command {
+- (void)startPaymentFlow:(CDVInvokedUrlCommand *)command {
     BTThreeDSecureRequest * threeDSecureRequest = [[BTThreeDSecureRequest alloc] init];
 
     [threeDSecureRequest setAmount: [NSDecimalNumber decimalNumberWithString: (NSString *)[command.arguments objectAtIndex:0]]];

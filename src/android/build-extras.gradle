@@ -1,4 +1,4 @@
-
+/*
 def packageName = getPackageName()
 
 android {
@@ -18,10 +18,10 @@ repositories {
 }
 
 dependencies {
-    api 'com.braintreepayments.api:braintree:3.+'
-    api 'com.braintreepayments.api:drop-in:4.+'
-    api 'com.google.android.gms:play-services-wallet:+'
-    api 'io.card:android-sdk:5.5.1'
+    // api 'com.braintreepayments.api:braintree:3.+'
+    api 'com.braintreepayments.api:drop-in:6.2.0'
+    // api 'com.google.android.gms:play-services-wallet:+'
+    // api 'io.card:android-sdk:5.5.1'
     components.all {
         allVariants {
             withDependencies { deps ->
@@ -46,4 +46,29 @@ def getPackageName() {
     def config = configFile.getText()
     def xml = new XmlParser(false, false).parseText(config)
     return xml.attribute("id")
+}
+*/
+
+dependencies {
+    // implementation 'com.braintreepayments.api:braintree:3+'
+    implementation 'com.braintreepayments.api:drop-in:6+'
+}
+
+/*
+ * Fix for ERROR: Failed to resolve: org.jfrog.cardinalcommerce.gradle:cardinalmobilesdk
+ *
+ * See https://stackoverflow.com/questions/60113189/braintree-drop-in-ui-error-failed-to-resolve-org-jfrog-cardinalcommerce-gradl
+ */
+allprojects {
+    repositories {
+        google()
+        // jcenter()
+        maven {
+            url "https://cardinalcommerceprod.jfrog.io/artifactory/android"
+            credentials {
+                username 'braintree_team_sdk'
+                password 'AKCp8jQcoDy2hxSWhDAUQKXLDPDx6NYRkqrgFLRc3qDrayg6rrCbJpsKKyMwaykVL8FWusJpp'
+            }
+        }
+    }
 }
