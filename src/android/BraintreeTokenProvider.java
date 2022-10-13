@@ -1,7 +1,6 @@
 package cc.fovea;
 
 import android.util.Log;
-import cc.fovea.BraintreePlugin;
 import com.braintreepayments.api.ClientTokenCallback;
 import com.braintreepayments.api.ClientTokenProvider;
 import org.json.JSONObject;
@@ -39,7 +38,9 @@ public final class BraintreeTokenProvider implements ClientTokenProvider {
         this.callback = pCallback;
 
         if (!this.plugin.hasListener()) {
-            Log.d(BraintreePlugin.TAG, "BraintreeTokenProvider.getClientToken() => failure: plugin not initialized yet.");
+            Log.d(BraintreePlugin.TAG,
+                    "BraintreeTokenProvider.getClientToken() => failure: "
+                            + "plugin not initialized yet.");
             pCallback.onFailure(new Exception(
                     "Braintree ClientTokenProvider not provided."));
             return;
@@ -56,7 +57,8 @@ public final class BraintreeTokenProvider implements ClientTokenProvider {
      */
     public void onClientTokenSuccess(final String clientToken) {
         if (this.callback != null) {
-            Log.d(BraintreePlugin.TAG, "BraintreeTokenProvider.success(" + clientToken + ")");
+            Log.d(BraintreePlugin.TAG,
+                "BraintreeTokenProvider.success(" + clientToken + ")");
             this.callback.onSuccess(clientToken);
             this.callback = null;
         }
@@ -69,7 +71,8 @@ public final class BraintreeTokenProvider implements ClientTokenProvider {
      */
     public void onClientTokenFailure(final String message) {
         if (this.callback != null) {
-            Log.d(BraintreePlugin.TAG, "BraintreeTokenProvider.failure(" + message + ")");
+            Log.d(BraintreePlugin.TAG,
+                "BraintreeTokenProvider.failure(" + message + ")");
             callback.onFailure(new Exception(message));
             this.callback = null;
         }
