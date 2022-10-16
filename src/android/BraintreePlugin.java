@@ -150,6 +150,20 @@ public final class BraintreePlugin extends CordovaPlugin
     }
   }
 
+  /**
+   * Creates the DropInClient as soon as the app starts.
+   *
+   * In principle this will get called from `pluginInitialize`
+   * which is run by the Activity's `onCreate`, because we are
+   * setting "onload=true" in the plugin.xml file.
+   *
+   * This is a requirement for the Braintree Android implementation
+   * because it uses internally some activity state listener that
+   * needs to be initialize before the `onStart` event.
+   *
+   * We're also checking if it runs in the main thread, as it is 
+   * another requirement for the SDK initialization.
+   */
   private void createDropInClientAtStartup() {
     try {
       Log.i(TAG, "Initializing Braintree.DropInClient...");
@@ -172,54 +186,13 @@ public final class BraintreePlugin extends CordovaPlugin
    */
   private void createDropInClient(final CallbackContext callbackContext) {
     BraintreePlugin that = this;
-    // cordova.getActivity().runOnUiThread(new Runnable() {
-    // public void run() {
     if (that.dropInClient == null) {
       that.createDropInClientAtStartup();
     }
     if (callbackContext != null) {
       callbackContext.success();
     }
-    // }
-    // });
   }
-
-  // @Override
-  // public void onError(final Exception error) {
-  // Log.e(TAG, "Caught error from BraintreeSDK: " + error.getMessage());
-  // try {
-  // this.sendToListener("error", new JSONObject().put("message",
-  // error.getMessage()));
-  // } catch (JSONException e) {
-  // e.printStackTrace();
-  // }
-  // }
-
-  /*
-   * Set the braintree token.
-   *
-   * @param callbackContext Cordova's callback.
-   *
-   * @param args Arguments passed to the native call.
-   *
-   * private synchronized void initializeBraintreeClient(
-   * final CallbackContext callbackContext,
-   * final JSONArray args) throws Exception {
-   * if (args.length() != 1) {
-   * callbackContext.error("A token is required.");
-   * return;
-   * }
-   * String token = args.getString(0);
-   * if (token == null || token.equals("")) {
-   * callbackContext.error("Empty token.");
-   * return;
-   * }
-   * braintreeClient = new BraintreeClient(
-   * this, new BraintreeTokenProvider(this));
-   *
-   * callbackContext.success();
-   * }
-   */
 
   /**
    * Called when the ClientTokenProvider responded.
