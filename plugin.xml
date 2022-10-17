@@ -50,9 +50,9 @@
     </platform>
 
     <!-- iOS Configuration -->
-    <!-- platform name="ios">
+    <platform name="ios">
 
-        <preference name="IOS_BRAINTREE_POD_VERSION" default="~> 5.5.0" />
+        <preference name="IOS_BRAINTREE_POD_VERSION" default="~> 5.14.0" />
 
         <config-file target="config.xml" parent="/*">
             <feature name="BraintreePlugin">
@@ -68,13 +68,14 @@
                 <source url="https://cdn.cocoapods.org/" />
             </config>
             <pods>
-                <pod name="Braintree" spec="$IOS_BRAINTREE_POD_VERSION" />
+                <pod name="BraintreeDropIn" />
+                <!-- pod name="Braintree" spec="$IOS_BRAINTREE_POD_VERSION" />
                 <pod name="Braintree/DataCollector" spec="$IOS_BRAINTREE_POD_VERSION" />
                 <pod name="Braintree/ThreeDSecure" spec="$IOS_BRAINTREE_POD_VERSION" />
-                <pod name="Braintree/ApplePay" spec="$IOS_BRAINTREE_POD_VERSION" />
+                <pod name="Braintree/ApplePay" spec="$IOS_BRAINTREE_POD_VERSION" / -->
             </pods>
         </podspec>
 
-    </platform -->
+    </platform>
 
 </plugin>
