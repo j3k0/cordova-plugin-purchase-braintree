@@ -60,6 +60,8 @@
             </feature>
         </config-file>
 
+        <hook type="before_build" src="scripts/iosBeforeBuild.js" />
+
         <header-file src="src/ios/BraintreePlugin.h" />
         <source-file src="src/ios/BraintreePlugin.m" />
 
