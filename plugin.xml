@@ -52,7 +52,7 @@
     <!-- iOS Configuration -->
     <platform name="ios">
 
-        <preference name="IOS_BRAINTREE_POD_VERSION" default="~> 5.14.0" />
+        <!-- preference name="IOS_BRAINTREE_POD_VERSION" default="~> 5.14.0" / -->
 
         <config-file target="config.xml" parent="/*">
             <feature name="BraintreePlugin">
@@ -60,23 +60,197 @@
             </feature>
         </config-file>
 
-        <hook type="before_build" src="scripts/iosBeforeBuild.js" />
+        <!-- hook type="before_build" src="scripts/iosBeforeBuild.js" / -->
+        <hook type="before_plugin_install" src="scripts/iosBeforeInstall.js" />
 
         <header-file src="src/ios/BraintreePlugin.h" />
-        <source-file src="src/ios/BraintreePlugin.m" />
+        <source-file src="src/ios/BraintreePlugin.m" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
 
-        <podspec>
-            <config>
-                <source url="https://cdn.cocoapods.org/" />
-            </config>
-            <pods>
-                <pod name="BraintreeDropIn" />
-                <!-- pod name="Braintree" spec="$IOS_BRAINTREE_POD_VERSION" />
-                <pod name="Braintree/DataCollector" spec="$IOS_BRAINTREE_POD_VERSION" />
-                <pod name="Braintree/ThreeDSecure" spec="$IOS_BRAINTREE_POD_VERSION" />
-                <pod name="Braintree/ApplePay" spec="$IOS_BRAINTREE_POD_VERSION" / -->
-            </pods>
-        </podspec>
+        <!-- List of source files from BraintreeDropIn. Generated with ./gen-ios-source-files.sh -->
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKUnionPayVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKDinersClubVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeUnknownCardVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeMaestroVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeVenmoMonogramCardView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargePayPalMonogramCardView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeHipercardVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeAmExVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeDinersClubVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeDiscoverVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeVisaVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeHiperVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeMasterCardVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeApplePayMarkVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeUnionPayVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeJCBVectorArtView.m" target-dir="Large" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKCVVBackVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKVisaVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKHiperVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKApplePayMarkVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKDiscoverVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKCardVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKVenmoWordmarkVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKHipercardVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKUnknownCardVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKPayPalMonogramCardView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKMasterCardVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKPayPalWordmarkCompactVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKAmExVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKCVVFrontVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKVenmoMonogramCardView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKJCBVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKMaestroVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKPayPalWordmarkVectorArtView.m" target-dir="Vector Art" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/BTPaymentMethodNonce+DropIn.m" target-dir="BraintreeDropIn" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/BTCardFormViewController.m" target-dir="BraintreeDropIn" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Models/BTUIKCardType.m" target-dir="Models" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Models/BTUIKCardExpiryFormat.m" target-dir="Models" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Models/BTUIKCardExpirationValidator.m" target-dir="Models" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Models/BTDropInResult.m" target-dir="Models" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Models/BTUIKUtil.m" target-dir="Models" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Models/BTDropInRequest.m" target-dir="Models" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/BTDropInUICustomization.m" target-dir="BraintreeDropIn" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKBarButtonItem.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKInputAccessoryToolbar.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKTextField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKMobileCountryCodeFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKPaymentOptionCardView.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKPostalCodeFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKSecurityCodeFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKMobileNumberFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKCardListLabel.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKCardholderNameFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKExpiryFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKCollectionReusableView.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKCardNumberFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Components/BTUIKSwitchFormField.m" target-dir="Components" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/BTVaultManagementViewController.m" target-dir="BraintreeDropIn" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/BTPaymentSelectionViewController.m" target-dir="BraintreeDropIn" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/BTDropInBaseViewController.m" target-dir="BraintreeDropIn" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/BTDropInController.m" target-dir="BraintreeDropIn" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/BTDropInUIUtilities.m" target-dir="BraintreeDropIn" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Helpers/UIColor+BTUIK.m" target-dir="Helpers" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Helpers/UIFont+BTUIK.m" target-dir="Helpers" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Helpers/BTConfiguration+DropIn.m" target-dir="Helpers" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Helpers/BTUIKViewUtil.m" target-dir="Helpers" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Helpers/BTUIKAppearance.m" target-dir="Helpers" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Localization/BTDropInLocalization.m" target-dir="Localization" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Custom Views/BTVaultedPaymentMethodsTableViewCell.m" target-dir="Custom Views" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Custom Views/BTEnrollmentVerificationViewController.m" target-dir="Custom Views" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Custom Views/BTDropInPaymentSelectionCell.m" target-dir="Custom Views" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Custom Views/BTPaymentSelectionHeaderView.m" target-dir="Custom Views" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <source-file src="src/ios/BraintreeDropIn/Custom Views/BTUIPaymentMethodCollectionViewCell.m" target-dir="Custom Views" compiler-flags="-I$PROJECT_DIR/$PROJECT_NAME/Plugins/cordova-plugin-purchase-braintree/" />
+        <header-file src="src/ios/BraintreeDropIn/BTVaultManagementViewController.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/BTPaymentSelectionViewController.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKMasterCardVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeHiperVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeVisaVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeDiscoverVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeUnionPayVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeApplePayMarkVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeMasterCardVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeJCBVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeMaestroVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeUnknownCardVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeVenmoMonogramCardView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeHipercardVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargePayPalMonogramCardView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeDinersClubVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/Large/BTUIKLargeAmExVectorArtView.h" target-dir="Large" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKCVVFrontVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKAmExVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKPayPalWordmarkCompactVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKPayPalWordmarkVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKMaestroVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKJCBVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKVenmoMonogramCardView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKUnionPayVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKApplePayMarkVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKHiperVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKVisaVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKCVVBackVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKDinersClubVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKVenmoWordmarkVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKCardVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKDiscoverVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKUnknownCardVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKPayPalMonogramCardView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/Vector Art/BTUIKHipercardVectorArtView.h" target-dir="Vector Art" />
+        <header-file src="src/ios/BraintreeDropIn/BTDropInUIUtilities.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/BTDropInBaseViewController.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Models/BTUIKUtil.h" target-dir="Models" />
+        <header-file src="src/ios/BraintreeDropIn/Models/BTDropInResult_Internal.h" target-dir="Models" />
+        <header-file src="src/ios/BraintreeDropIn/Models/BTUIKCardType.h" target-dir="Models" />
+        <header-file src="src/ios/BraintreeDropIn/Models/BTUIKCardExpiryFormat.h" target-dir="Models" />
+        <header-file src="src/ios/BraintreeDropIn/Models/BTUIKCardExpirationValidator.h" target-dir="Models" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKCardListLabel.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKCardholderNameFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKExpiryFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKCollectionReusableView.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKSwitchFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKCardNumberFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKBarButtonItem.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKTextField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKInputAccessoryToolbar.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKMobileCountryCodeFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKMobileNumberFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKSecurityCodeFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKPostalCodeFormField.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Components/BTUIKPaymentOptionCardView.h" target-dir="Components" />
+        <header-file src="src/ios/BraintreeDropIn/Public/BraintreeDropIn/BTDropInUICustomization.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Public/BraintreeDropIn/BTDropInController.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Public/BraintreeDropIn/BTDropInRequest.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Public/BraintreeDropIn/BraintreeDropIn.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Public/BraintreeDropIn/BTDropInPaymentMethodType.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Public/BraintreeDropIn/BTDropInLocalization.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Public/BraintreeDropIn/BTDropInResult.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/BTCardFormViewController.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/BTPaymentMethodNonce+DropIn.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/BTAPIClient_Internal_Category.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Helpers/UIFont+BTUIK.h" target-dir="Helpers" />
+        <header-file src="src/ios/BraintreeDropIn/Helpers/BTUIKViewUtil.h" target-dir="Helpers" />
+        <header-file src="src/ios/BraintreeDropIn/Helpers/BTConfiguration+DropIn.h" target-dir="Helpers" />
+        <header-file src="src/ios/BraintreeDropIn/Helpers/BTUIKVisualAssetType.h" target-dir="Helpers" />
+        <header-file src="src/ios/BraintreeDropIn/Helpers/BTUIKAppearance.h" target-dir="Helpers" />
+        <header-file src="src/ios/BraintreeDropIn/Helpers/UIColor+BTUIK.h" target-dir="Helpers" />
+        <header-file src="src/ios/BraintreeDropIn/BTUIKBarButtonItem_Internal_Declaration.h" target-dir="BraintreeDropIn" />
+        <header-file src="src/ios/BraintreeDropIn/Localization/BTDropInLocalization_Internal.h" target-dir="Localization" />
+        <header-file src="src/ios/BraintreeDropIn/Custom Views/BTDropInPaymentSelectionCell.h" target-dir="Custom Views" />
+        <header-file src="src/ios/BraintreeDropIn/Custom Views/BTPaymentSelectionHeaderView.h" target-dir="Custom Views" />
+        <header-file src="src/ios/BraintreeDropIn/Custom Views/BTUIPaymentMethodCollectionViewCell.h" target-dir="Custom Views" />
+        <header-file src="src/ios/BraintreeDropIn/Custom Views/BTEnrollmentVerificationViewController.h" target-dir="Custom Views" />
+        <header-file src="src/ios/BraintreeDropIn/Custom Views/BTVaultedPaymentMethodsTableViewCell.h" target-dir="Custom Views" />
+        <!-- end of generated list of source files -->
+
+        <resource-file src="src/ios/BraintreeDropIn-Resources.bundle" />
+
+        <framework src="lib/ios/BraintreeAmericanExpress.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreeApplePay.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreeCard.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreeCore.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreeDataCollector.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreePaymentFlow.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreePayPal.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreePayPalNativeCheckout.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreeSEPADirectDebit.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreeThreeDSecure.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreeUnionPay.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreeUnionPay.xcframework/ios-arm64/BraintreeUnionPay.framework" />
+        <framework src="lib/ios/BraintreeVenmo.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/PayPalDataCollector.xcframework" custom="true" embed="true" weak="false" />
+
+        <!-- framework src="lib/ios/BraintreeDropIn.xcframework" custom="true" embed="true" weak="false" / -->
+        <!-- framework src="lib/ios/BraintreeUI.xcframework" custom="true" embed="true" weak="false" / -->
+        <!-- framework src="lib/ios/BraintreeUIKit.xcframework" custom="true" embed="true" weak="false" / -->
+        <!-- framework src="lib/ios/CardinalMobile.xcframework" custom="true" embed="true" weak="false" / -->
+        <!-- framework src="lib/ios/PayPalOneTouch.xcframework" custom="true" embed="true" weak="false" / -->
+        <!-- framework src="lib/ios/PayPalUtils.xcframework" custom="true" embed="true" weak="false" / -->
 
     </platform>
 

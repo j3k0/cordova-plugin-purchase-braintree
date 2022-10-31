@@ -6,7 +6,7 @@
 
 #import "BraintreePlugin.h"
 #import <objc/runtime.h>
-#import <BraintreeDropIn.h>
+#import <BraintreeDropIn/BraintreeDropIn.h>
 
 /*
  * Constants
