@@ -5,7 +5,7 @@ const { execSync } = require('child_process');
 const IOS_FRAMEWORKS_PATH = 'plugins/cordova-plugin-purchase-braintree/lib/ios';
 const TEMP_PATH = 'plugins/cordova-plugin-purchase-braintree/tmp';
 
-const BRAINTREE_IOS_VERSION = '5.16.0';
+const BRAINTREE_IOS_VERSION = '5.15.0';
 const BRAINTREE_IOS_RELEASE_URL = `https://github.com/braintree/braintree_ios/releases/download/${BRAINTREE_IOS_VERSION}/Braintree.xcframework.zip`;
 
 // To be executed before installing a plugin (to the platforms).
