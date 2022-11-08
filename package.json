@@ -31,7 +31,7 @@
   ],
   "license": "MIT",
   "main": "index.js",
-  "author": "Fovea, fork MedIT Solutions, fork Taracque and Engineerapart",
+  "author": "Fovea",
   "private": false,
   "bugs": {
     "url": "https://github.com/j3k0/cordova-plugin-purchase-braintree/issues"
