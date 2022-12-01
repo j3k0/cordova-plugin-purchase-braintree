@@ -576,8 +576,8 @@ public final class BraintreePlugin extends CordovaPlugin
     if (request.has("vaultManager")) {
       dropInRequest.setVaultManagerEnabled(parseBoolean(request, "vaultManager", false));
     }
-    if (request.has("disableCard")) {
-      dropInRequest.setCardDisabled(parseBoolean(request, "disableCard", false));
+    if (request.has("cardDisabled")) {
+      dropInRequest.setCardDisabled(parseBoolean(request, "cardDisabled", false));
     }
     if (request.has("maskCardNumber")) {
       dropInRequest.setMaskCardNumber(parseBoolean(request, "maskCardNumber", false));

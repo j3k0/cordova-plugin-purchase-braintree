@@ -248,7 +248,8 @@
         <!-- framework src="lib/ios/BraintreeDropIn.xcframework" custom="true" embed="true" weak="false" / -->
         <!-- framework src="lib/ios/BraintreeUI.xcframework" custom="true" embed="true" weak="false" / -->
         <!-- framework src="lib/ios/BraintreeUIKit.xcframework" custom="true" embed="true" weak="false" / -->
-        <!-- framework src="lib/ios/CardinalMobile.xcframework" custom="true" embed="true" weak="false" / -->
+        <!-- CardinalMobile is required for 3D Secure -->
+        <framework src="lib/ios/CardinalMobile.xcframework" custom="true" embed="true" weak="false" />
         <!-- framework src="lib/ios/PayPalOneTouch.xcframework" custom="true" embed="true" weak="false" / -->
         <!-- framework src="lib/ios/PayPalUtils.xcframework" custom="true" embed="true" weak="false" / -->
 
