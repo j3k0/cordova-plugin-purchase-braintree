@@ -13,9 +13,9 @@
     <license>MIT</license>
 
     <!-- JavaScript Interface -->
-    <!-- js-module src="www/braintree-plugin.js" name="BraintreePlugin">
-        <clobbers target="BraintreePlugin" />
-    </js-module -->
+    <js-module src="www/braintree-plugin.js" name="CdvPurchaseBraintree">
+        <clobbers target="CdvPurchaseBraintree" />
+    </js-module>
 
     <!-- Android Configuration -->
     <platform name="android">
