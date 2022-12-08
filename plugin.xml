@@ -52,13 +52,12 @@
     <!-- iOS Configuration -->
     <platform name="ios">
 
-        <!-- preference name="IOS_BRAINTREE_POD_VERSION" default="~> 5.14.0" / -->
-
         <config-file target="config.xml" parent="/*">
             <feature name="BraintreePlugin">
                 <param name="ios-package" value="BraintreePlugin" />
             </feature>
         </config-file>
+
 
         <!-- hook type="before_build" src="scripts/iosBeforeBuild.js" / -->
         <hook type="before_plugin_install" src="scripts/iosBeforeInstall.js" />
