@@ -20,16 +20,15 @@
 #define VERBOSITY_WARN 2
 #define VERBOSITY_ERROR 1
 
-@interface BraintreePlugin() <PKPaymentAuthorizationViewControllerDelegate>
-@end
-
 @implementation BraintreePlugin
 
 /// Callback called to send native logs to javascript
-NSString *loggerCallback = nil;
+static NSString *loggerCallback = nil;
+
+static BTAPIClient *apiClient = nil;
 
 /// Level of verbosity for the plugin
-long verbosityLevel = VERBOSITY_INFO;
+static long verbosityLevel = VERBOSITY_INFO;
 
 /// Prefix used for logs from the braintree plugin
 static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
@@ -75,6 +74,25 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
     NSString *value = [BraintreePlugin stringIn:options forKey:key];
     if (value == nil) return nil;
     return [NSDecimalNumber decimalNumberWithString:value];
+}
+
++ (NSDate*)dateIn:(NSDictionary*)options forKey:(NSString*)key {
+    NSNumber *value = [options valueForKey:key];
+    if (!value) return nil;
+    return [NSDate dateWithTimeIntervalSince1970:[value doubleValue]/1000];
+}
+
+/// This returns an NSCalendarUnit from an IPeriodUnit.
+/// Note: the value "Week" is not supported.
++ (NSCalendarUnit)calendarUnitIn:(NSDictionary*)options forKey:(NSString*)key withDefault:(NSCalendarUnit)defaultValue {
+    NSString *value = [options valueForKey:key];
+    if (!value) return defaultValue;
+    if ([value isEqualToString:@"Minute"]) return NSCalendarUnitMinute;
+    if ([value isEqualToString:@"Hour"]) return NSCalendarUnitHour;
+    if ([value isEqualToString:@"Day"]) return NSCalendarUnitDay;
+    if ([value isEqualToString:@"Month"]) return NSCalendarUnitMonth;
+    if ([value isEqualToString:@"Year"]) return NSCalendarUnitYear;
+    return defaultValue;
 }
 
 - (BTThreeDSecureAccountType) parseThreeDSecureAccountType: (NSString*)value {
@@ -228,13 +246,17 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
     NSString *clientToken = [command argumentAtIndex:0];
     NSDictionary *request = [command argumentAtIndex:1];
     [self debug:[NSString stringWithFormat:@"[launchDropIn] clientToken:%@", clientToken]];
+
     BTDropInRequest *dropInRequest = [self parseDropInRequest: request];
+    [self debug:[NSString stringWithFormat:@"> request:%@", dropInRequest]];
+    [self debug:[NSString stringWithFormat:@"> request 3DS amount:%@", dropInRequest.threeDSecureRequest.amount]];
 
     BTDropInController *dropInController = [
         [BTDropInController alloc]
         initWithAuthorization:clientToken
         request:dropInRequest
         handler:^(BTDropInController * _Nonnull controller, BTDropInResult * _Nullable result, NSError * _Nullable error) {
+            apiClient = controller.apiClient;
             if (error != nil) {
                 [self sendPluginError:error toCommand:command];
             }
@@ -259,44 +281,6 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
     [self.viewController presentViewController:dropInController animated:NO completion:^{
         // view controller presented.
     }];
-}
-
-#pragma mark - ApplePay
-    
-- (void) isApplePaySupported:(CDVInvokedUrlCommand*)command {
-    BOOL message = ((PKPaymentAuthorizationViewController.canMakePayments) && ([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover]]));
-    CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:message];
-    [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
-}
-
-- (void) initApplePay {
-
-//    // Ensure the client has been initialized.
-//    if (!self.braintreeClient) {
-//        CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The Braintree client must first be initialized via BraintreePlugin.initialize(token)"];
-//        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
-//        return;
-//    }
-//
-//    if ([command.arguments count] != 3) {
-//        CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Merchant id, Currency code and Country code are required."];
-//        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
-//        return;
-//    }
-//
-//    if ((PKPaymentAuthorizationViewController.canMakePayments) && ([PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover]])) {
-//        applePayMerchantID = [command.arguments objectAtIndex:0];
-//        currencyCode = [command.arguments objectAtIndex:1];
-//        countryCode = [command.arguments objectAtIndex:2];
-//
-//        applePayInited = YES;
-//
-//        CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-//        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
-//    } else {
-//        CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"ApplePay cannot be used."];
-//        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
-//    }
 }
 
 #pragma mark - Helpers
@@ -397,5 +381,9 @@ const NSString *PT_UNKNOWN = @"UNKNOWN";
 - (void) info:(NSString*)message { [self log:VERBOSITY_INFO message:message]; }
 - (void) warn:(NSString*)message { [self log:VERBOSITY_WARN message:message]; }
 - (void) error:(NSString*)message { [self log:VERBOSITY_ERROR message:message]; }
+
++ (BTAPIClient*) getClient {
+    return apiClient;
+}
 
 @end
