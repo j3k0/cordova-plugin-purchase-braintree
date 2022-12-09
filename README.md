@@ -94,6 +94,10 @@ Once again, iaptic has built-in support for Braintree, so this part is already c
 app is integrated with Iaptic. If now, implement the server side call using values provided by
 the receipt validation call.
 
+## Apple Pay
+
+The [cordova-plugin-purchase-braintree-applepay](https://github.com/j3k0/cordova-plugin-purchase-braintree-applepay) plugin is an extension that enables support for Apple. By installing this plugin, you can add support for Apple Pay to your Cordova app, through Braintree.
+
 ## Notes
 
 ### Crash on iOS with Braintree SDK 5.16.0
