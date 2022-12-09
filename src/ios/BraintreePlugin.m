@@ -78,7 +78,7 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
 
 + (NSDate*)dateIn:(NSDictionary*)options forKey:(NSString*)key {
     NSNumber *value = [options valueForKey:key];
-    if (!value) return nil;
+    if (value == nil) return nil;
     return [NSDate dateWithTimeIntervalSince1970:[value doubleValue]/1000];
 }
 
@@ -86,7 +86,7 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
 /// Note: the value "Week" is not supported.
 + (NSCalendarUnit)calendarUnitIn:(NSDictionary*)options forKey:(NSString*)key withDefault:(NSCalendarUnit)defaultValue {
     NSString *value = [options valueForKey:key];
-    if (!value) return defaultValue;
+    if (value == nil) return defaultValue;
     if ([value isEqualToString:@"Minute"]) return NSCalendarUnitMinute;
     if ([value isEqualToString:@"Hour"]) return NSCalendarUnitHour;
     if ([value isEqualToString:@"Day"]) return NSCalendarUnitDay;
@@ -290,7 +290,8 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
  * Handles several different types of nonces (eg for cards, Apple Pay, PayPal, etc).
  */
 - (NSDictionary*)dictionaryFromPaymentMethodNonce:(BTPaymentMethodNonce *)paymentMethodNonce {
-    
+
+    if (paymentMethodNonce == nil) return nil;
     NSDictionary *dictionary = @{
         // Standard Fields
         @"nonce": paymentMethodNonce.nonce,
@@ -343,12 +344,14 @@ const NSString *PT_UNKNOWN = @"UNKNOWN";
         case BTDropInPaymentMethodTypeVenmo: return PT_VENMO;
         case BTDropInPaymentMethodTypeApplePay: return PT_APPLE_PAY;
     }
+    return PT_UNKNOWN;
 }
 
 /// Converts a DropInResult to NSDictionary (to return to the plugin)
 ///
 /// Should corresponds to CdvPurchase.Braintree.DropIn.Result in typescript
 - (NSDictionary*)dictionaryFromDropInResult:(BTDropInResult*)result {
+    if (result == nil) return nil;
     return @{
         @"deviceData": result.deviceData,
         @"paymentDescription": result.paymentDescription,
