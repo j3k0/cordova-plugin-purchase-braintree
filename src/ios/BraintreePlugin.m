@@ -20,6 +20,20 @@
 #define VERBOSITY_WARN 2
 #define VERBOSITY_ERROR 1
 
+@interface NSObject (OrNull)
++ (id)orNull:(id)value;
+@end
+
+@implementation NSObject (OrNull)
++ (id)orNull:(id)value {
+    if (value == nil) {
+        return [NSNull null];
+    }
+    return value;
+}
+@end
+
+
 @implementation BraintreePlugin
 
 /// Callback called to send native logs to javascript
@@ -58,25 +72,29 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
 #pragma mark - Parsing
 
 + (BOOL)boolIn:(NSDictionary*)options forKey:(NSString*)key withDefault:(BOOL)defaultValue {
+    if (!options) return defaultValue;
     id value = [options valueForKey:key];
     if (value == nil) return defaultValue;
     return [(NSNumber*)value boolValue];
 }
 
-+ (NSString*)stringIn:(NSDictionary*)options forKey:(NSString*)key {
++ (NSString * _Nullable)stringIn:(NSDictionary*)options forKey:(NSString*)key {
+    if (!options) return nil;
     id value = [options valueForKey:key];
     if (value == nil) return nil;
     return (NSString*)value;
 }
 
 /// Decimal number passed as a string
-+ (NSDecimalNumber*)decimalNumberIn:(NSDictionary*)options forKey:(NSString*)key {
++ (NSDecimalNumber * _Nullable)decimalNumberIn:(NSDictionary*)options forKey:(NSString*)key {
+    if (!options) return nil;
     NSString *value = [BraintreePlugin stringIn:options forKey:key];
     if (value == nil) return nil;
     return [NSDecimalNumber decimalNumberWithString:value];
 }
 
-+ (NSDate*)dateIn:(NSDictionary*)options forKey:(NSString*)key {
++ (NSDate * _Nullable)dateIn:(NSDictionary*)options forKey:(NSString*)key {
+    if (!options) return nil;
     NSNumber *value = [options valueForKey:key];
     if (value == nil) return nil;
     return [NSDate dateWithTimeIntervalSince1970:[value doubleValue]/1000];
@@ -85,6 +103,7 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
 /// This returns an NSCalendarUnit from an IPeriodUnit.
 /// Note: the value "Week" is not supported.
 + (NSCalendarUnit)calendarUnitIn:(NSDictionary*)options forKey:(NSString*)key withDefault:(NSCalendarUnit)defaultValue {
+    if (!options) return defaultValue;
     NSString *value = [options valueForKey:key];
     if (value == nil) return defaultValue;
     if ([value isEqualToString:@"Minute"]) return NSCalendarUnitMinute;
@@ -294,8 +313,8 @@ static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
     if (paymentMethodNonce == nil) return nil;
     NSDictionary *dictionary = @{
         // Standard Fields
-        @"nonce": paymentMethodNonce.nonce,
-        @"type": paymentMethodNonce.type,
+        @"nonce": [NSObject orNull:paymentMethodNonce.nonce],
+        @"type": [NSObject orNull:paymentMethodNonce.type],
         @"isDefault": @(paymentMethodNonce.isDefault)
     };
     
@@ -352,11 +371,17 @@ const NSString *PT_UNKNOWN = @"UNKNOWN";
 /// Should corresponds to CdvPurchase.Braintree.DropIn.Result in typescript
 - (NSDictionary*)dictionaryFromDropInResult:(BTDropInResult*)result {
     if (result == nil) return nil;
+//    NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+//    [ret setObject:result.deviceData forKey:@"deviceData"];
+//    [ret setObject:result.paymentDescription forKey:@"paymentDescription"];
+//    [ret setObject:[self dictionaryFromPaymentMethodNonce:result.paymentMethod] forKey:@"paymentMethodNonce"];
+//    [ret setObject:[self fromDropInPaymentMethodType:result.paymentMethodType] forKey:@"paymentMethodType"];
+//    return ret;
     return @{
-        @"deviceData": result.deviceData,
-        @"paymentDescription": result.paymentDescription,
-        @"paymentMethodNonce": [self dictionaryFromPaymentMethodNonce:result.paymentMethod],
-        @"paymentMethodType": [self fromDropInPaymentMethodType:result.paymentMethodType]
+        @"deviceData": [NSObject orNull:result.deviceData],
+        @"paymentDescription": [NSObject orNull:result.paymentDescription],
+        @"paymentMethodNonce": [NSObject orNull:[self dictionaryFromPaymentMethodNonce:result.paymentMethod]],
+        @"paymentMethodType": [NSObject orNull:[self fromDropInPaymentMethodType:result.paymentMethodType]]
     };
 }
 
