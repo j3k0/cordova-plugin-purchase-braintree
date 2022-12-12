@@ -1,2 +1,3 @@
-node_modules
-.checkstyle.jar
+/node_modules
+/.checkstyle.jar
+/ngx
