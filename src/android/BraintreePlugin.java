@@ -166,7 +166,7 @@ public final class BraintreePlugin extends CordovaPlugin
    * because it uses internally some activity state listener that
    * needs to be initialize before the `onStart` event.
    *
-   * We're also checking if it runs in the main thread, as it is 
+   * We're also checking if it runs in the main thread, as it is
    * another requirement for the SDK initialization.
    */
   private void createDropInClientAtStartup() {
@@ -506,10 +506,14 @@ public final class BraintreePlugin extends CordovaPlugin
     JSONObject input = obj.getJSONObject(field);
 
     ThreeDSecureRequest req = new ThreeDSecureRequest();
-    Log.d(TAG, "ThreeDSecureRequest: amount=" + input.getString("amount"));
-    Log.d(TAG, "                     nonce=" + input.getString("nonce"));
-    req.setAmount(input.getString("amount"));
-    req.setNonce(input.getString("nonce"));
+    if (input.has("amount")) {
+      Log.d(TAG, "ThreeDSecureRequest: amount=" + input.getString("amount"));
+      req.setAmount(input.getString("amount"));
+    }
+    if (input.has("nonce")) {
+      Log.d(TAG, "                     nonce=" + input.getString("nonce"));
+      req.setNonce(input.getString("nonce"));
+    }
     if (input.has("email")) {
       req.setEmail(input.getString("email"));
     }
@@ -636,21 +640,22 @@ public final class BraintreePlugin extends CordovaPlugin
       return null;
     }
     TransactionInfo.Builder transactionInfo = TransactionInfo.newBuilder();
-    if (obj.has("currencyCode")) {
-      transactionInfo.setCurrencyCode(obj.getString("currencyCode"));
+    JSONObject input = obj.getJSONObject(fieldName);
+    if (input.has("currencyCode")) {
+      transactionInfo.setCurrencyCode(input.getString("currencyCode"));
     }
-    if (obj.has("totalPrice")) {
-      transactionInfo.setTotalPrice(obj.getString("totalPrice"));
+    if (input.has("totalPrice")) {
+      transactionInfo.setTotalPrice(input.getString("totalPrice"));
     }
-    if (obj.has("totalPriceStatus")) {
-      transactionInfo.setTotalPriceStatus(parseInt(obj, "totalPriceStatus", WalletConstants.TOTAL_PRICE_STATUS_FINAL));
+    if (input.has("totalPriceStatus")) {
+      transactionInfo.setTotalPriceStatus(parseInt(input, "totalPriceStatus", WalletConstants.TOTAL_PRICE_STATUS_FINAL));
     }
     return transactionInfo.build();
   }
 
   /**
    * Data in JSON:
-   * 
+   *
    * {
    * "threeDSecureRequest": {
    * }
@@ -680,13 +685,9 @@ public final class BraintreePlugin extends CordovaPlugin
       Log.d(TAG, "Enabling Google Pay...");
       dropInRequest.setGooglePayRequest(googlePayRequest);
     }
-    // not available...
-    // dropInRequest.setRequestThreeDSecureVerification(parseBoolean(request,
-    // "requestThreeDSecureVerification", false));
-    // not available...
-    // dropInRequest.setCollectDeviceData(parseBoolean(request,
-    // "collectDeviceData",false));
-
+    else {
+      dropInRequest.setGooglePayDisabled(true);
+    }
     if (request.has("vaultManager")) {
       dropInRequest.setVaultManagerEnabled(parseBoolean(request, "vaultManager", false));
     }
@@ -716,7 +717,7 @@ public final class BraintreePlugin extends CordovaPlugin
 
   /**
    * Called when a {@link DropInResult} is created without error.
-   * 
+   *
    * @param dropInResult a {@link DropInResult}
    */
   @Override
@@ -784,7 +785,7 @@ public final class BraintreePlugin extends CordovaPlugin
 
   /**
    * Called when DropIn has finished with an error.
-   * 
+   *
    * @param error explains reason for DropIn failure.
    */
   @Override
@@ -1015,13 +1016,13 @@ public final class BraintreePlugin extends CordovaPlugin
    * Log.i(TAG, "handleDropInPaymentUiResult resultCode ==> "
    * + resultCode + ", paymentMethodNonce = "
    * + paymentMethodNonce);
-   * 
+   *
    * if (_callbackContext == null) {
    * Log.e(TAG, "handleDropInPaymentUiResult exiting "
    * + "==> callbackContext is invalid");
    * return;
    * }
-   * 
+   *
    * if (resultCode == Activity.RESULT_CANCELED) {
    * Map<String, Object> resultMap = new HashMap<String, Object>();
    * resultMap.put("userCancelled", true);
@@ -1039,7 +1040,7 @@ public final class BraintreePlugin extends CordovaPlugin
    * _callbackContext = null;
    * return;
    * }
-   * 
+   *
    * Map<String, Object> resultMap =
    * this.getPaymentUINonceResult(paymentMethodNonce, deviceData);
    * _callbackContext.success(new JSONObject(resultMap));
@@ -1050,7 +1051,7 @@ public final class BraintreePlugin extends CordovaPlugin
   /*
    * Helper used to return a dictionary of values
    * from the given payment method nonce.
-   
+
    * Handles several different types of nonces (eg for cards, PayPal, etc).
    *
    * @param paymentMethodNonce The nonce used to build a dictionary from.
@@ -1093,7 +1094,7 @@ public final class BraintreePlugin extends CordovaPlugin
    * resultMap.put("clientMetadataId",
    * payPalAccountNonce.getClientMetadataId());
    * resultMap.put("payerId", payPalAccountNonce.getPayerId());
-   * 
+   *
    * resultMap.put("paypalAccount", innerMap);
    * }
    *
@@ -1101,7 +1102,7 @@ public final class BraintreePlugin extends CordovaPlugin
    * if (paymentMethodNonce instanceof CardNonce) {
    * CardNonce cardNonce = (CardNonce) paymentMethodNonce;
    * ThreeDSecureInfo threeDSecureInfo = cardNonce.getThreeDSecureInfo();
-   * 
+   *
    * if (threeDSecureInfo != null) {
    * Map<String, Object> innerMap = new HashMap<String, Object>();
    * innerMap.put("liabilityShifted",
@@ -1112,50 +1113,50 @@ public final class BraintreePlugin extends CordovaPlugin
    * resultMap.put("threeDSecureInfo", innerMap);
    * }
    * }
-   * 
+   *
    * // Venmo
    * if (paymentMethodNonce instanceof VenmoAccountNonce) {
    * VenmoAccountNonce venmoAccountNonce =
    * (VenmoAccountNonce) paymentMethodNonce;
-   * 
+   *
    * Map<String, Object> innerMap = new HashMap<String, Object>();
    * innerMap.put("username", venmoAccountNonce.getUsername());
-   * 
+   *
    * resultMap.put("venmoAccount", innerMap);
    * }
-   * 
+   *
    * return resultMap;
    * }
-   * 
+   *
    * @Override
    * public void onPaymentMethodNonceCreated(
    * final PaymentMethodNonce paymentMethodNonce) {
    * Log.i(TAG, "onPaymentMethodNonceCreated  ==> paymentMethodNonce = "
    * + paymentMethodNonce);
-   * 
+   *
    * if (_callbackContext == null) {
    * Log.e(TAG, "onPaymentMethodNonceCreated exiting "
    * + "==> callbackContext is invalid");
    * return;
    * }
-   * 
+   *
    * try {
    * JSONObject json = new JSONObject();
-   * 
+   *
    * json.put("nonce", paymentMethodNonce.getNonce().toString());
    * // json.put("deviceData",
    * // DataCollector.collectDeviceData(braintreeFragment));
    * // json.put("deviceData",
    * // DataCollector.collectDeviceData(braintreeFragment,
    * // this));
-   * 
+   *
    * if (paymentMethodNonce instanceof PayPalAccountNonce) {
    * PayPalAccountNonce pp = (PayPalAccountNonce) paymentMethodNonce;
    * json.put("payerId", pp.getPayerId().toString());
    * json.put("firstName", pp.getFirstName().toString());
    * json.put("lastName", pp.getLastName().toString());
    * }
-   * 
+   *
    * _callbackContext.sendPluginResult(
    * new PluginResult(PluginResult.Status.OK, json));
    * } catch (Exception e) {

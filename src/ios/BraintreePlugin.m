@@ -45,7 +45,7 @@ static BTAPIClient *apiClient = nil;
 static long verbosityLevel = VERBOSITY_INFO;
 
 /// Prefix used for logs from the braintree plugin
-static const NSString *LOG_PREFIX = @"CordovaPurchase.Braintree.objc";
+static const NSString *LOG_PREFIX = @"CdvPurchase.Braintree.objc";
 
 #pragma mark - Cordova commands
 
