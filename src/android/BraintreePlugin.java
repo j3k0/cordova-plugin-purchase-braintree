@@ -23,8 +23,12 @@ import com.braintreepayments.api.DropInPaymentMethod;
 // import com.braintreepayments.api.models.PaymentMethodNonce;
 // import com.braintreepayments.api.models.ThreeDSecureInfo;
 import com.braintreepayments.api.ThreeDSecureRequest;
+import com.braintreepayments.api.GooglePayRequest;
 import com.braintreepayments.api.ThreeDSecureAdditionalInformation;
 import com.braintreepayments.api.ThreeDSecurePostalAddress;
+import com.google.android.gms.wallet.ShippingAddressRequirements;
+import com.google.android.gms.wallet.TransactionInfo;
+import com.google.android.gms.wallet.WalletConstants;
 
 // import javax.swing.event.TreeSelectionEvent;
 
@@ -39,6 +43,7 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.ArrayList;
 
 /**
  * Entrypoint for the Android Braintree Plugin.
@@ -51,7 +56,7 @@ public final class BraintreePlugin extends CordovaPlugin
   /**
    * TAG used for logs.
    */
-  public static final String TAG = "CordovaPurchase.Braintree";
+  public static final String TAG = "CdvPurchase.Braintree";
 
   // private static final int DROP_IN_REQUEST = 100;
   // private static final int PAYMENT_BUTTON_REQUEST = 200;
@@ -539,6 +544,110 @@ public final class BraintreePlugin extends CordovaPlugin
     return req;
   }
 
+  private GooglePayRequest parseGooglePayRequest(final JSONObject obj, final String field) throws JSONException {
+    if (!obj.has(field)) {
+      return null;
+    }
+
+    JSONObject input = obj.getJSONObject(field);
+    GooglePayRequest req = new GooglePayRequest();
+
+    if (input.has("countryCode")) {
+      req.setCountryCode(input.getString("countryCode"));
+    }
+
+    if (input.has("payPalEnabled")) {
+      req.setPayPalEnabled(parseBoolean(input, "payPalEnabled", true));
+    }
+
+    if (input.has("googleMerchantName")) {
+      req.setGoogleMerchantName(input.getString("googleMerchantName"));
+    }
+
+    if (input.has("billingAddressRequired")) {
+      req.setBillingAddressRequired(parseBoolean(input, "billingAddressRequired", false));
+    }
+
+    if (input.has("billingAddressFormat")) {
+      req.setBillingAddressFormat(parseInt(input, "billingAddressFormat", WalletConstants.BILLING_ADDRESS_FORMAT_MIN));
+    }
+
+    if (input.has("shippingAddressRequired")) {
+      req.setShippingAddressRequired(parseBoolean(input, "shippingAddressRequired", false));
+    }
+
+    if (input.has("shippingAddressRequirements")) {
+      req.setShippingAddressRequirements(parseGooglePayShippingAddressRequirements(input.getJSONObject("shippingAddressRequirements")));
+    }
+
+    if (input.has("emailRequired")) {
+      req.setEmailRequired(parseBoolean(input, "emailRequired", false));
+    }
+
+    if (input.has("phoneNumberRequired")) {
+      req.setPhoneNumberRequired(parseBoolean(input, "phoneNumberRequired", false));
+    }
+
+    if (input.has("allowPrepaidCards")) {
+      req.setAllowPrepaidCards(parseBoolean(input, "allowPrepaidCards", true));
+    }
+
+    if (input.has("transactionInfo")) {
+      req.setTransactionInfo(parseGooglePayTransactionInfo(input, "transactionInfo"));
+    }
+
+    if (input.has("allowedPaymentMethod")) {
+      JSONArray allowedPaymentMethods = input.getJSONArray("allowedPaymentMethod");
+      for (int i = 0; i < allowedPaymentMethods.length(); i++) {
+        JSONObject pm = allowedPaymentMethods.getJSONObject(i);
+        if (!pm.has("type")) continue;
+        String pmType = pm.getString("type");
+        if (obj.has("allowedCardNetworks")) {
+          req.setAllowedCardNetworks(pmType, pm.getJSONArray("allowedCardNetworks"));
+        }
+        if (obj.has("allowedAuthMethods")) {
+          req.setAllowedAuthMethods(pmType, pm.getJSONArray("allowedAuthMethods"));
+        }
+        JSONObject parameters = pm.has("parameters") ? pm.getJSONObject("parameters") : null;
+        req.setAllowedPaymentMethod(pmType, parameters);
+      }
+    }
+
+    if (input.has("environment")) {
+      req.setEnvironment(input.getString("environment"));
+    }
+
+    return req;
+  }
+
+  private ShippingAddressRequirements parseGooglePayShippingAddressRequirements(final JSONObject obj) throws JSONException {
+    ShippingAddressRequirements.Builder requirements = ShippingAddressRequirements.newBuilder();
+    if (obj.has("allowedCountryCodes")) {
+      JSONArray allowedCountryCodes = obj.getJSONArray("allowedCountryCodes");
+      for (int i = 0; i < allowedCountryCodes.length(); i++) {
+        requirements.addAllowedCountryCode(allowedCountryCodes.getString(i));
+      }
+    }
+    return requirements.build();
+  }
+
+  private TransactionInfo parseGooglePayTransactionInfo(final JSONObject obj, final String fieldName) throws JSONException {
+    if (!obj.has(fieldName)) {
+      return null;
+    }
+    TransactionInfo.Builder transactionInfo = TransactionInfo.newBuilder();
+    if (obj.has("currencyCode")) {
+      transactionInfo.setCurrencyCode(obj.getString("currencyCode"));
+    }
+    if (obj.has("totalPrice")) {
+      transactionInfo.setTotalPrice(obj.getString("totalPrice"));
+    }
+    if (obj.has("totalPriceStatus")) {
+      transactionInfo.setTotalPriceStatus(parseInt(obj, "totalPriceStatus", WalletConstants.TOTAL_PRICE_STATUS_FINAL));
+    }
+    return transactionInfo.build();
+  }
+
   /**
    * Data in JSON:
    * 
@@ -563,8 +672,13 @@ public final class BraintreePlugin extends CordovaPlugin
     JSONObject request = args.getJSONObject(0);
     ThreeDSecureRequest threeDSecureRequest = parseThreeDSecureRequest(request, "threeDSecureRequest");
     if (threeDSecureRequest != null) {
-      Log.d(TAG, "Using ThreeDSecureRequest");
+      Log.d(TAG, "Enabling 3DSecure...");
       dropInRequest.setThreeDSecureRequest(threeDSecureRequest);
+    }
+    GooglePayRequest googlePayRequest = parseGooglePayRequest(request, "googlePayRequest");
+    if (googlePayRequest != null) {
+      Log.d(TAG, "Enabling Google Pay...");
+      dropInRequest.setGooglePayRequest(googlePayRequest);
     }
     // not available...
     // dropInRequest.setRequestThreeDSecureVerification(parseBoolean(request,
