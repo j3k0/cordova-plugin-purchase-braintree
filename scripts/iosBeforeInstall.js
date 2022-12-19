@@ -51,6 +51,7 @@ module.exports = async function (context) {
     execSync(`unzip -o "${TEMP_PATH}/Braintree.xcframework.zip" -d "${TEMP_PATH}"`);
     execSync(`unzip -o "${TEMP_PATH}/CardinalMobile.xcframework.zip" -d "${TEMP_PATH}"`);
     execSync(`rsync -a "${TEMP_PATH}/Carthage/Build/" "${IOS_FRAMEWORKS_PATH}"`);
+    execSync(`rm -fr "${TEMP_PATH}/CardinalMobile.xcframework"`);
     execSync(`mv "${TEMP_PATH}/CardinalMobile.${CARDINAL_MOBILE_VERSION}.xcframework" "${TEMP_PATH}/CardinalMobile.xcframework"`);
     execSync(`rsync -a "${TEMP_PATH}/CardinalMobile.xcframework" "${IOS_FRAMEWORKS_PATH}/"`);
     // execSync(`rsync -a "${TEMP_PATH}/CardinalMobile.${CARDINAL_MOBILE_VERSION}.xcframework/" "${IOS_FRAMEWORKS_PATH}/CardinalMobile.xcframework"`);
