@@ -41,7 +41,13 @@ CdvPurchase.store.initialize([{
 }]);
 ```
 
-The options object should contain a `clientTokenProvider` or a `tokenizationKey` string. Check the [Braintree documentation](https://developer.paypal.com/braintree/docs/start/overview) to understand the difference.
+The options object should contain:
+- a `clientTokenProvider` or a `tokenizationKey` string.
+- optional configuration options for Apple Pay, Google Pay and 3DSecure.
+
+#### Client Token or Tokenization Key
+
+Check the [Braintree documentation](https://developer.paypal.com/braintree/docs/guides/authorization/overview) to understand the difference.
 
 `clientTokenProvider` is a function that takes a callback as a parameter, this callback will accept either:
 
@@ -58,11 +64,13 @@ const iaptic = new CdvPurchase.Iaptic({
 store.initialize([Platform.APPLE_APPSTORE, Platform.GOOGLE_PLAY, {
     platform: Platform.BRAINTREE,
     options: {
-        // iaptic's braintree client token provider
+        // using iaptic's built-in braintree client token provider
         clientTokenProvider: iaptic.braintreeClientTokenProvider
     }
 }]);
 ```
+
+`tokenizationKey` is just a string.
 
 ### Making a purchase
 
@@ -76,14 +84,31 @@ Use the `store.requestPayment()` method to initiate a payment with Braintree.
 ```ts
 store.requestPayment({
   platform: CdvPurchase.Platform.BRAINTREE,
-  productIds: ['my-product-1', 'my-product-2'], // Use anything, for reference
-  amountMicros: 1990000,
-  currency: 'USD',
-  description: 'This this the description of the payment request',
-}).then((result) => {
-  if (result && result.isError && result.code !== CdvPurchase.ErrorCode.PAYMENT_CANCELLED) {
-    alert(result.message);
-  }
+  email: GetEmailAddress(),
+  items: [{
+    id: 'item_id',
+    title: 'An Item',
+    pricing: { // 11 USD
+        priceMicros: 11 * 1000000,
+        currency: 'USD',
+    }
+  }],
+  description: 'An item delivered before Christmas',
+})
+.cancelled(() => {
+  // request cancelled by user
+})
+.failed(error => {
+  // request failed
+})
+.initiated(transaction => {
+  // transaction initiated
+})
+.approved(transaction => {
+  // transaction initiated
+})
+.finished(transaction => {
+  // transaction finished
 });
 ```
 
@@ -94,9 +119,84 @@ Once again, iaptic has built-in support for Braintree, so this part is already c
 app is integrated with Iaptic. If now, implement the server side call using values provided by
 the receipt validation call.
 
-## Apple Pay
+### 3DSecure
+
+To enable 3DSecure, you have to add `threeDSecure` into the platform options.
+
+Example:
+```js
+{
+  platform: Platform.BRAINTREE,
+  options: {
+    // ...
+    threeDSecure: {
+      exemptionRequested: true
+    }
+  }
+}
+```
+
+It can also be an empty object if you don't have any specific options to set. The list of accepted options is documented here: [ThreeDSecure.Request](https://github.com/j3k0/cordova-plugin-purchase/blob/master/api/interfaces/CdvPurchase.Braintree.ThreeDSecure.Request.md).
+
+Those options will be merged into all Braintree payment requests. They can be overloaded by adding `threeDSecureRequest` in the payment request' additional data, for example:
+
+```js
+CdvPurchase.store.requestPayment({
+    platform: CdvPurchase.Platform.BRAINTREE,
+    items: [/* */],
+    email: GetEmailAddress(),
+}, {
+  braintree: {
+    threeDSecureRequest: {
+      exemptionRequested: false
+    }
+  }
+});
+```
+
+`threeDSecureRequest` is of the same type: a [ThreeDSecure.Request](https://github.com/j3k0/cordova-plugin-purchase/blob/master/api/interfaces/CdvPurchase.Braintree.ThreeDSecure.Request.md) object.
+
+### Google Pay
+
+To enable Google Pay, you have to add `googlePay` into the platform options.
+
+Example:
+```js
+{
+  platform: Platform.BRAINTREE,
+  options: {
+    // ...
+    googlePay: {
+      countryCode: 'US',
+      googleMerchantName: 'My Merchant Name',
+      environment: 'TEST'
+    },
+  }
+}
+```
+
+The list of accepted options is documented here: [GooglePay.Request](https://github.com/j3k0/cordova-plugin-purchase/blob/master/api/interfaces/CdvPurchase.Braintree.GooglePay.Request.md).
+
+Those options will be merged into all Braintree payment requests. As with 3DSecure, those options can be overloaded by adding `googlePayRequest` into the payment request's additional data, for example.
+
+```js
+CdvPurchase.store.requestPayment({
+    platform: CdvPurchase.Platform.BRAINTREE,
+    items: [/* */],
+}, {
+  braintree: {
+    googlePayRequest: {
+      shippingAddressRequired: true,
+    },
+  }
+});
+```
+
+### Apple Pay
 
 The [cordova-plugin-purchase-braintree-applepay](https://github.com/j3k0/cordova-plugin-purchase-braintree-applepay) plugin is an extension that enables support for Apple. By installing this plugin, you can add support for Apple Pay to your Cordova app, through Braintree.
+
+Documentation related to Apple Pay can be found in that repository.
 
 ## Notes
 
