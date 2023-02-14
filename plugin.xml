@@ -236,7 +236,7 @@
         <framework src="lib/ios/BraintreeDataCollector.xcframework" custom="true" embed="true" weak="false" />
         <framework src="lib/ios/BraintreePaymentFlow.xcframework" custom="true" embed="true" weak="false" />
         <framework src="lib/ios/BraintreePayPal.xcframework" custom="true" embed="true" weak="false" />
-        <framework src="lib/ios/BraintreePayPalNativeCheckout.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/BraintreePayPalNativeCheckout.xcframework" custom="true" embed="true" weak="true" />
         <framework src="lib/ios/BraintreeSEPADirectDebit.xcframework" custom="true" embed="true" weak="false" />
         <framework src="lib/ios/BraintreeThreeDSecure.xcframework" custom="true" embed="true" weak="false" />
         <framework src="lib/ios/BraintreeUnionPay.xcframework" custom="true" embed="true" weak="false" />
