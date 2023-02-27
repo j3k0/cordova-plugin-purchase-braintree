@@ -243,6 +243,7 @@
         <framework src="lib/ios/BraintreeUnionPay.xcframework/ios-arm64/BraintreeUnionPay.framework" />
         <framework src="lib/ios/BraintreeVenmo.xcframework" custom="true" embed="true" weak="false" />
         <framework src="lib/ios/PayPalDataCollector.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/PayPalCheckout.xcframework" custom="true" embed="true" weak="false" />
 
         <!-- framework src="lib/ios/BraintreeDropIn.xcframework" custom="true" embed="true" weak="false" / -->
         <!-- framework src="lib/ios/BraintreeUI.xcframework" custom="true" embed="true" weak="false" / -->
