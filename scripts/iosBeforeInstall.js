@@ -1,12 +1,13 @@
 const fs = require('fs');
 const https = require('https');
-const { execSync } = require('child_process');
+const { execSync, exec } = require('child_process');
 
 const IOS_FRAMEWORKS_PATH = 'plugins/cordova-plugin-purchase-braintree/lib/ios';
 const TEMP_PATH = '.downloads/cordova-plugin-purchase-braintree';
 
-const BRAINTREE_IOS_VERSION = '5.15.0';
+const BRAINTREE_IOS_VERSION = '5.23.0';
 const BRAINTREE_IOS_RELEASE_URL = `https://github.com/braintree/braintree_ios/releases/download/${BRAINTREE_IOS_VERSION}/Braintree.xcframework.zip`;
+const BRAINTREE_IOS_REPO_ARCHIVE_URL = `https://github.com/braintree/braintree_ios/archive/refs/tags/${BRAINTREE_IOS_VERSION}.zip`;
 
 const PAYPALCHECKOUT_IOS_VERSION = '0.110.0';
 const PAYPALCHECKOUT_IOS_RELEASE_URL = `https://github.com/paypal/paypalcheckout-ios/releases/download/${PAYPALCHECKOUT_IOS_VERSION}/PayPalCheckout.xcframework.zip`;
@@ -17,6 +18,11 @@ const CARDINAL_MOBILE_URL = `https://assets.braintreegateway.com/mobile/ios/cart
 
 // To be executed before installing a plugin (to the platforms).
 module.exports = async function (context) {
+
+    // clean up old download directory
+    if (!fs.existsSync(`${TEMP_PATH}/${BRAINTREE_IOS_VERSION}`)) {
+        execSync(`rm -fr "${TEMP_PATH}"`);
+    }
 
     if (fs.existsSync(IOS_FRAMEWORKS_PATH + '/BraintreeCore.xcframework/Info.plist')
         && fs.existsSync(IOS_FRAMEWORKS_PATH + '/CardinalMobile.xcframework/Info.plist')) {
@@ -36,43 +42,43 @@ module.exports = async function (context) {
         await download(BRAINTREE_IOS_RELEASE_URL, `${TEMP_PATH}/Braintree.xcframework.zip`);
     }
 
-    // 1b - Download CardinalMobile
-    if (!fs.existsSync(`${TEMP_PATH}/CardinalMobile.xcframework.zip`)) {
-        // Improvement, fetch the URL from:
-        // https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.json"
-        console.log("Downloading CardinalMobile.xcframework " + CARDINAL_MOBILE_VERSION + ", from " + CARDINAL_MOBILE_URL);
-        await download(CARDINAL_MOBILE_URL, `${TEMP_PATH}/CardinalMobile.xcframework.zip`);
-    }
-
-    // 1c- Download PayPalCheckout
+    // 1b- Download PayPalCheckout
     if (!fs.existsSync(`${TEMP_PATH}/PayPalCheckout.xcframework.zip`)) {
         console.log("Downloading PayPalCheckout SDK version " + PAYPALCHECKOUT_IOS_VERSION + ", from " + PAYPALCHECKOUT_IOS_RELEASE_URL);
         await download(PAYPALCHECKOUT_IOS_RELEASE_URL, `${TEMP_PATH}/PayPalCheckout.xcframework.zip`);
     }
 
-    // 2- Create "fraweworks" directory
+    // 1c- Download braintree_ios repository (it contains additional frameworks that are required)
+    if (!fs.existsSync(`${TEMP_PATH}/Braintree-Repo.zip`)) {
+        console.log("Downloading Braintree repository version " + BRAINTREE_IOS_VERSION + ", from " + BRAINTREE_IOS_REPO_ARCHIVE_URL);
+        await download(BRAINTREE_IOS_REPO_ARCHIVE_URL, `${TEMP_PATH}/Braintree-Repo.zip`);
+    }
+
+    // 2- Create "frameworks" directory
     if (!fs.existsSync(IOS_FRAMEWORKS_PATH)) {
         fs.mkdirSync(IOS_FRAMEWORKS_PATH, { recursive: true });
     }
 
+    execSync(`touch "${TEMP_PATH}/${BRAINTREE_IOS_VERSION}"`);
+
     // 3- Extract 
     console.log("Extracting Braintree SDK...");
     execSync(`unzip -o "${TEMP_PATH}/Braintree.xcframework.zip" -d "${TEMP_PATH}"`);
-    execSync(`unzip -o "${TEMP_PATH}/CardinalMobile.xcframework.zip" -d "${TEMP_PATH}"`);
+    execSync(`unzip -o "${TEMP_PATH}/Braintree-Repo.zip" -d "${TEMP_PATH}"`);
     execSync(`rsync -a "${TEMP_PATH}/Carthage/Build/" "${IOS_FRAMEWORKS_PATH}"`);
-    execSync(`rm -fr "${TEMP_PATH}/CardinalMobile.xcframework"`);
-    execSync(`mv "${TEMP_PATH}/CardinalMobile.${CARDINAL_MOBILE_VERSION}.xcframework" "${TEMP_PATH}/CardinalMobile.xcframework"`);
-    execSync(`rsync -a "${TEMP_PATH}/CardinalMobile.xcframework" "${IOS_FRAMEWORKS_PATH}/"`);
 
     console.log("Adding PayPalCheckout SDK as a top-level dependency...");
     // fixing "Invalid Bundle. The bundle at '/Frameworks/BraintreePayPalNativeCheckout.framework' contains disallowed nested bundles."
     // PayPalCheckout is removed as a nested framework, now installed as a top-level dependency
     execSync(`unzip -o "${TEMP_PATH}/PayPalCheckout.xcframework.zip" -d "${TEMP_PATH}"`);
-    execSync(`rsync -a "${TEMP_PATH}/PayPalCheckout.xcframework" "${IOS_FRAMEWORKS_PATH}/"`);
+    execSync(`rsync -a --delete "${TEMP_PATH}/PayPalCheckout.xcframework" "${IOS_FRAMEWORKS_PATH}/"`);
     execSync(`rm -fr "${TEMP_PATH}/PayPalCheckout.xcframework"`);
     execSync(`rm -fr "${IOS_FRAMEWORKS_PATH}/BraintreePayPalNativeCheckout.xcframework/ios-arm64/BraintreePayPalNativeCheckout.framework/Frameworks"`);
     execSync(`rm -fr "${IOS_FRAMEWORKS_PATH}/BraintreePayPalNativeCheckout.xcframework/ios-arm64_x86_64-simulator/BraintreePayPalNativeCheckout.framework/Frameworks"`);
     // execSync(`rsync -a "${TEMP_PATH}/CardinalMobile.${CARDINAL_MOBILE_VERSION}.xcframework/" "${IOS_FRAMEWORKS_PATH}/CardinalMobile.xcframework"`);
+    execSync(`rsync -a --delete "${TEMP_PATH}/braintree_ios-${BRAINTREE_IOS_VERSION}/Frameworks/XCFrameworks/PPRiskMagnes.xcframework" "${IOS_FRAMEWORKS_PATH}/"`);
+    execSync(`rsync -a --delete "${TEMP_PATH}/braintree_ios-${BRAINTREE_IOS_VERSION}/Frameworks/XCFrameworks/CardinalMobile.xcframework" "${IOS_FRAMEWORKS_PATH}/"`);
+    execSync(`rsync -a --delete "${TEMP_PATH}/braintree_ios-${BRAINTREE_IOS_VERSION}/Frameworks/XCFrameworks/KountDataCollector.xcframework" "${IOS_FRAMEWORKS_PATH}/"`);
 
     // 4- Cleanup
     // execSync(`rm -fr "${TEMP_PATH}"`);
