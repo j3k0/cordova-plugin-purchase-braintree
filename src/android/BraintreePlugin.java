@@ -709,7 +709,9 @@ public final class BraintreePlugin extends CordovaPlugin
     if (request.has("cardholderNameStatus")) {
       dropInRequest.setCardholderNameStatus(parseInt(request, "cardholderNameStatus", 0));
     }
-
+    if (request.has("paypalDisabled")) {
+      dropInRequest.setPayPalDisabled(parseBoolean(request, "paypalDisabled", false));
+    }
     Log.d(TAG, "calling dropInClient.launchDropIn(dropInRequest)");
     // forceCreateDropInClient(dropInRequest);
     dropInClient.launchDropIn(dropInRequest);
