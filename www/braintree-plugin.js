@@ -1,4 +1,4 @@
 module.exports = {
-  version: "13.2.0",
+  version: "13.2.4",
   installed: true,
 }
