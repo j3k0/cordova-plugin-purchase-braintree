@@ -253,7 +253,7 @@
         <!-- framework src="lib/ios/PayPalOneTouch.xcframework" custom="true" embed="true" weak="false" / -->
         <!-- framework src="lib/ios/PayPalUtils.xcframework" custom="true" embed="true" weak="false" / -->
         <framework src="lib/ios/PPRiskMagnes.xcframework" custom="true" embed="true" weak="false" />
-        <framework src="lib/ios/KountDataCollector.xcframework" custom="true" embed="true" weak="false" />
+        <framework src="lib/ios/KountDataCollector.xcframework" custom="true" embed="false" weak="false" />
 
     </platform>
 
