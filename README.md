@@ -198,22 +198,6 @@ The [cordova-plugin-purchase-braintree-applepay](https://github.com/j3k0/cordova
 
 Documentation related to Apple Pay can be found in that repository.
 
-## Notes
-
-### Crash on iOS with Braintree SDK 5.16.0
-
-Running on device, the app crashes with:
-
-    Termination Description: DYLD, Library not loaded: @rpath/PPRiskMagnes.framework/PPRiskMagnes
-    Referenced from: /private/var/containers/Bundle/Application/E39026F3-50D7-4A92-AEA0-CFE6564973E4/Minimum Template.app/Frameworks/PayPalDataCollector.framework/PayPalDataCollector
-    Reason: image not found
-
-Notice that this is a release related with the *PPRiskMagnes* library: see [Release Notes for 5.16.0](https://github.com/braintree/braintree_ios/releases/tag/5.16.0)
-
-This might be interesting: https://github.com/braintree/braintree_ios/issues/735
-
-It works with `5.15.0`.
-
 ## Licence
 
 The MIT License
