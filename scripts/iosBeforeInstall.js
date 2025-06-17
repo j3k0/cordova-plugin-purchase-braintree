@@ -5,7 +5,7 @@ const { execSync, exec } = require('child_process');
 const IOS_FRAMEWORKS_PATH = 'plugins/cordova-plugin-purchase-braintree/lib/ios';
 const TEMP_PATH = '.downloads/cordova-plugin-purchase-braintree';
 
-const BRAINTREE_IOS_VERSION = '5.23.0';
+const BRAINTREE_IOS_VERSION = '5.27.0';
 const BRAINTREE_IOS_RELEASE_URL = `https://github.com/braintree/braintree_ios/releases/download/${BRAINTREE_IOS_VERSION}/Braintree.xcframework.zip`;
 const BRAINTREE_IOS_REPO_ARCHIVE_URL = `https://github.com/braintree/braintree_ios/archive/refs/tags/${BRAINTREE_IOS_VERSION}.zip`;
 
